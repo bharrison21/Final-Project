@@ -1,6 +1,18 @@
 #does this work
 #question we are answering: How does an NBA team’s performance affect local businesses?
 #first function will access the API's/website
+
+import json
+import os
+import requests
+
+
+
+nba_stats_url='http://stats.nba.com/stats/teamdashboardbyyearoveryear/?measureType=Base&perMode=PerGame&plusMinus=N&paceAdjust=N&rank=N&leagueId=00&season=2020-21&seasonType=Regular+Season&poRound=0&teamId=1610612745&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&shotClockRange=&lastNGames=0'
+r=requests.get(nba_stats_url)
+data=json.loads(r.text)
+print(r)
+
 #second function will access and store at least 100 items in your database from each API/website in at least one table per API/website. 
 # For at least one API you must have two tables that share a key
 # You must not have duplicate data in your database!  Do not split data from one table into two! 
