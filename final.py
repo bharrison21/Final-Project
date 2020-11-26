@@ -13,11 +13,18 @@ kate_stockapikey='UQPW0KR0NTZ7ZUUO'
 #nba_stats_url='http://stats.nba.com/stats/teamdashboardbyyearoveryear/?measureType=Base&perMode=PerGame&plusMinus=N&paceAdjust=N&rank=N&leagueId=00&season=2020-21&seasonType=Regular+Season&poRound=0&teamId=1610612745&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&shotClockRange=&lastNGames=0'
 #r=requests.get(nba_stats_url)
 #nbadata=json.loads(r.text)
+def get_nba_api_data():
+    url = ""
+    re=requests.get(url)
+    data=json.loads(re.text)
+    print(data)
 
-stock_url='https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey='+kate_stockapikey
-re=requests.get(stock_url)
-data=json.loads(re.text)
-print(data)
+get_nba_api_data()
+def get_stock_api_data(kate_stockapikey):
+    stock_url='https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey='+kate_stockapikey
+    re=requests.get(stock_url)
+    data=json.loads(re.text)
+    print(data)
 
 #second function will access and store at least 100 items in your database from each API/website in at least one table per API/website. 
 # For at least one API you must have two tables that share a key
