@@ -14,7 +14,7 @@ kate_stockapikey='UQPW0KR0NTZ7ZUUO'
 #r=requests.get(nba_stats_url)
 #nbadata=json.loads(r.text)
 def get_nba_api_data():
-    url = ""
+    url = "https://www.balldontlie.io/api/v1/stats?seasons[]=2018&seasons[]=2015&player_ids[]=1&player_ids[]=2"
     re=requests.get(url)
     data=json.loads(re.text)
     print(data)
