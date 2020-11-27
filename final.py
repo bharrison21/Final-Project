@@ -14,10 +14,48 @@ kate_stockapikey='UQPW0KR0NTZ7ZUUO'
 #r=requests.get(nba_stats_url)
 #nbadata=json.loads(r.text)
 def get_nba_api_data():
-    url = "https://www.balldontlie.io/api/v1/stats?seasons[]=2018&seasons[]=2015&player_ids[]=1&player_ids[]=2"
-    re=requests.get(url)
+
+    #Retrieve seasons we want
+    url_1='https://www.balldontlie.io/api/v1/games'
+    re=requests.get(url_1, 
+    params={'seasons':[2015,2016,2017,2018,2019],
+    'per_page':100})
+    all_data=json.loads(re.text)
+    
+
+    #Retreive Stats from players
+    url_2='https://www.balldontlie.io/api/v1/stats'
+    ne=requests.get(url_2,
+    params={'seasons':[2015,2016,2017,2018,2019],
+    'per_page':100})
+    more_data=json.loads(ne.text)
+    x=more_data.get('data')
+    lst_id=[]
+    for y in x:
+        player=y['player']
+        lst_id.append(player['id'])
+
+        
+
+
+
+    #Retrieve Players from those years
+    url = "https://www.balldontlie.io/api/v1/players"
+    re=requests.get(url,
+    params={"per_page":100})
+    
     data=json.loads(re.text)
-    print(data)
+    first_dict=data.get('data')
+    lst_names=[]
+    for x in first_dict:
+        first=(x['first_name'])
+        last=(x['last_name'])
+        name=(first+' '+last)
+        if x['id'] in lst_id:
+            lst_names.append(name)
+    print(lst_names)
+    
+    
 
 get_nba_api_data()
 def get_stock_api_data(kate_stockapikey):
