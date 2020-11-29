@@ -1,4 +1,5 @@
 import json
+import sqlite3
 import os
 import requests
 
@@ -89,6 +90,30 @@ get_nba_api_data()
 
 
  
+    return [statement,statement2,statement3]
+
+
+
+def setUpDatabase(db_name):
+    path = os.path.dirname(os.path.abspath(__file__))
+    conn = sqlite3.connect(path+'/'+db_name)
+    cur = conn.cursor()
+    return cur, conn
+
+def setUpNBATable(data):
+    path = os.path.dirname(os.path.abspath(__file__))
+    conn = sqlite3.connect(path+'/'+'nba.db')
+    cur = conn.cursor()
+
+    cur.execute("DROP TABLE IF EXISTS Postseason")
+    cur.execute("CREATE TABLE Postseason (team TEXT PRIMARY KEY, season TEXT)")
+    for i in range(len(lst_city)):
+        teamname=get_nba_api_data[i]
+        season=get_nba_api_data[:3]
+        cur.execute("INSERT INTO Postseason (team,season) VALUES (?,?)",(teamname,season))
     
 
+#get_nba_api_data() 
+
+setUpNBATable(get_nba_api_data())
 
