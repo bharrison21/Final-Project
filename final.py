@@ -7,62 +7,76 @@ import os
 import requests
 
 
-kate_stockapikey='UQPW0KR0NTZ7ZUUO'
-
-
-#nba_stats_url='http://stats.nba.com/stats/teamdashboardbyyearoveryear/?measureType=Base&perMode=PerGame&plusMinus=N&paceAdjust=N&rank=N&leagueId=00&season=2020-21&seasonType=Regular+Season&poRound=0&teamId=1610612745&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&shotClockRange=&lastNGames=0'
-#r=requests.get(nba_stats_url)
-#nbadata=json.loads(r.text)
 def get_nba_api_data():
 
-    #Retrieve seasons we want
-    url_1='https://www.balldontlie.io/api/v1/games'
-    re=requests.get(url_1, 
-    params={'seasons':[2015,2016,2017,2018,2019],
-    'per_page':100})
-    all_data=json.loads(re.text)
+    #Retrieve which teams made the 2015-2016 NBA playoffs
+    lst_city=[]
+    for l in range(1,22):
+        url_2="https://www.balldontlie.io/api/v1/stats"
+        ne=requests.get(url_2,
+        params={'season':2015,
+        'postseason':True,
+        'start_date':'2016-04-15',
+        'end_date':'2016-06-20',
+        'page':l})
+        more_data=json.loads(ne.text)
+        x=more_data.get('data')
+        for y in x:
+            team=y['team']
+            city=team['city']
+            if city not in lst_city:
+                lst_city.append(city)
+    statement='2015-2016 Playoffs: ' + str(lst_city)
+    print('\n')
+    print(statement)
+
+
+    #Retrieve which teams made the 2016-2017 NBA playoffs
+    lst_city2=[]
+    for l in range(1,15):
+        url="https://www.balldontlie.io/api/v1/stats"
+        ne=requests.get(url,
+        params={'season':2016,
+        'postseason':True,
+        'start_date':'2017-04-13',
+        'end_date':'2017-06-13',
+        'page':l})
+        data=json.loads(ne.text)
+        var=data.get('data')
+        for t in var:
+            teams=t['team']
+            cities=teams['city']
+            if cities not in lst_city2:
+                lst_city2.append(cities)
+    statement2='2016-2017 Playoffs: ' + str(lst_city2)
+    print(statement2)
+
+    #Retriev which teams made the 2017-2018 NBA playoffs
+    lst_city3=[]
+    for l in range(1,15):
+        url="https://www.balldontlie.io/api/v1/stats"
+        ne=requests.get(url,
+        params={'season':2017,
+        'postseason':True,
+        'start_date':'2018-04-13',
+        'end_date':'2018-06-10',
+        'page':l})
+        fin_data=json.loads(ne.text)
+        v=fin_data.get('data')
+        for val in v:
+            team_1=val['team']
+            city_1=team_1['city']
+            if city_1 not in lst_city3:
+                lst_city3.append(city_1)
+    statement3='2017-2018 Playoffs: ' + str(lst_city3)
+    print(statement3)
+    
+    
+get_nba_api_data()    
     
 
-    #Retreive Stats from players
-    url_2='https://www.balldontlie.io/api/v1/stats'
-    ne=requests.get(url_2,
-    params={'seasons':[2015,2016,2017,2018,2019],
-    'per_page':100})
-    more_data=json.loads(ne.text)
-    x=more_data.get('data')
-    lst_id=[]
-    for y in x:
-        player=y['player']
-        lst_id.append(player['id'])
-
-        
 
 
-
-    #Retrieve Players from those years
-    url = "https://www.balldontlie.io/api/v1/players"
-    re=requests.get(url,
-    params={"per_page":100})
-    
-    data=json.loads(re.text)
-    first_dict=data.get('data')
-    lst_names=[]
-    for x in first_dict:
-        first=(x['first_name'])
-        last=(x['last_name'])
-        name=(first+' '+last)
-        if x['id'] in lst_id:
-            lst_names.append(name)
-    print(lst_names)
-    
-    
-
-get_nba_api_data()
-def get_stock_api_data(kate_stockapikey):
-    stock_url='https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey='+kate_stockapikey
-    re=requests.get(stock_url)
-    data=json.loads(re.text)
-    print(data)
 
 #second function will access and store at least 100 items in your database from each API/website in at least one table per API/website. 
 # For at least one API you must have two tables that share a key
