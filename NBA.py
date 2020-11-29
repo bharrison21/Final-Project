@@ -23,13 +23,13 @@ def get_nba_api_data():
             if city not in lst_city:
                 lst_city.append(city)
     statement='2015-2016 Playoffs: ' + str(lst_city)
-    
-    print(statement)
     print('\n')
+    print(statement)
+
 
     #Retrieve which teams made the 2016-2017 NBA playoffs
     lst_city2=[]
-    for l in range(1,5):
+    for l in range(1,15):
         url="https://www.balldontlie.io/api/v1/stats"
         ne=requests.get(url,
         params={'season':2016,
@@ -46,11 +46,10 @@ def get_nba_api_data():
                 lst_city2.append(cities)
     statement2='2016-2017 Playoffs: ' + str(lst_city2)
     print(statement2)
-    print('\n')
 
     #Retriev which teams made the 2017-2018 NBA playoffs
     lst_city3=[]
-    for l in range(1,5):
+    for l in range(1,15):
         url="https://www.balldontlie.io/api/v1/stats"
         ne=requests.get(url,
         params={'season':2017,
@@ -67,7 +66,7 @@ def get_nba_api_data():
                 lst_city3.append(city_1)
     statement3='2017-2018 Playoffs: ' + str(lst_city3)
     print(statement3)
-
+    
 
 get_nba_api_data()    
     
