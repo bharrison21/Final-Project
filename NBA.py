@@ -66,9 +66,29 @@ def get_nba_api_data():
                 lst_city3.append(city_1)
     statement3='2017-2018 Playoffs: ' + str(lst_city3)
     print(statement3)
+    final_city_list= []
+    for x in lst_city:
+        if x not in lst_city2:
+            final_city_list.append(x)
+    for x in lst_city3:
+        if x not in lst_city2:
+            if x not in final_city_list:
+                final_city_list.append(x)
+    print(final_city_list)
+    new_dict= {}
+    for x in lst_city:
+        new_dict[x]= new_dict.get(x,0) + 1
+    for x in lst_city2:
+        new_dict[x]= new_dict.get(x,0) + 1
+    for x in lst_city3:
+        new_dict[x]= new_dict.get(x,0) + 1
+    print(new_dict)
+    print(len(new_dict))
+get_nba_api_data()
     
 
-get_nba_api_data()    
+
+ 
     
 
 
