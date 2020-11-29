@@ -5,12 +5,30 @@ def nba_fan_attendance(year):
     page=requests.get(url)
     if page.ok:
         soup=BeautifulSoup(page.content, 'html.parser')
-        team=soup.find('div', class_='span-6')
-        team2= team.find('div', class_= 'mod-container mod-table mod-no-header mod-no-footer')
-        team3= team2.find('div', class_= 'mod-content')
-        team4= team3.find('table')
-        team5= team4.find('tbody')
-        print(team5)
+
+        table=soup.find('table')
+        rows=table.findAll('tr')
+
+        teamsdata={}
+
+        for row in rows[2:]:
+
+            vals=row.findAll('td')
+            finalrank=vals[0].text.strip()
+            homeaverage=vals[4].text.strip()
+            roadaverage=vals[7].text.strip()
+            totalaverage=vals[10].text.strip()
+
+            team1=row.findAll('td')
+            for x in team1:
+                team=x.find('a')
+                if team!=None:
+                    #print(team.text)
+                    finalteam=team.text.strip()
+                    teamsdata[finalteam]=[finalrank,homeaverage,roadaverage,totalaverage]
+        print(teamsdata)
+            
+           
 nba_fan_attendance(2016)
 
 
