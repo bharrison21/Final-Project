@@ -27,9 +27,7 @@ def nba_fan_attendance(year):
                     finalteam=team.text.strip()
                     teamsdata[finalteam]=[finalrank,homeaverage,roadaverage,totalaverage]
         print(teamsdata)
-            
-           
-nba_fan_attendance(2016)
+nba_fan_attendance(2017)
 
 
     
