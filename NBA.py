@@ -38,6 +38,7 @@ def get_nba_api_data_2015_2016():
             None
 
     for name in lst_city:
+        #if statement to limit additions 
         cur.execute("INSERT INTO Postseason (team, year, postseason) VALUES (?, ?, ?)",(name, 2015, 'yes'))
 
 
