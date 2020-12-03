@@ -16,8 +16,8 @@ def nba_fan_attendance(year):
             vals=row.findAll('td')
             finalrank=vals[0].text.strip()
             homeaverage=vals[4].text.strip()
-            roadaverage=vals[7].text.strip()
-            totalaverage=vals[10].text.strip()
+            #roadaverage=vals[7].text.strip()
+            #totalaverage=vals[10].text.strip()
 
             team1=row.findAll('td')
             for x in team1:
@@ -25,11 +25,9 @@ def nba_fan_attendance(year):
                 if team!=None:
                     #print(team.text)
                     finalteam=team.text.strip()
-                    teamsdata[finalteam]=[finalrank,homeaverage,roadaverage,totalaverage]
+                    teamsdata[finalteam]=[homeaverage,finalrank]
         print(teamsdata)
-            
-           
-nba_fan_attendance(2016)
+nba_fan_attendance(2017)
 
 
     
