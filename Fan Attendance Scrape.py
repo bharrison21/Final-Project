@@ -7,11 +7,11 @@ import os
 conn=sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
 cur = conn.cursor()
 
-cur.execute("DROP TABLE IF EXISTS Attendance")
+#cur.execute("DROP TABLE IF EXISTS Attendance")
 cur.execute("CREATE TABLE IF NOT EXISTS Attendance (rank INTEGER, team TEXT, homeav INTEGER, year INTEGER)")
 
 from bs4 import BeautifulSoup
-def nba_fan_attendance(year):
+def nba_fan_attendance(year,limit):
     url='http://www.espn.com/nba/attendance/_/year/' + str(year)
     page=requests.get(url)
     if page.ok:
@@ -37,14 +37,29 @@ def nba_fan_attendance(year):
                     #print(team.text)
                     finalteam=team.text.strip()
                     teamsdata[finalteam]=[homeaverage,finalrank]
-    for team in teamsdata:
-        rank=teamsdata[team][1]
-        homeaverage=teamsdata[team][0]
-        cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
+
+    #this is all to get it to limit how much data is added at once
+    tablelen=cur.execute("SELECT Count(*) FROM Attendance")
+    newlen=cur.fetchone()
+    val=newlen[-1]
+    while val<=limit:
+        for team in teamsdata:
+            if val>limit:
+                break
+            exists=cur.execute("SELECT team FROM Attendance WHERE team=?",(team, ))
+            if cur.fetchone():
+                continue
+            else:
+                rank=teamsdata[team][1]
+                homeaverage=teamsdata[team][0]
+                cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
+                tablelen=cur.execute("SELECT Count(*) FROM Attendance")
+                newlen=cur.fetchone()
+                val=newlen[-1]
         #print(teamsdata)
     conn.commit()
-nba_fan_attendance(2017)
-nba_fan_attendance(2018)
+nba_fan_attendance(2017,24)
+nba_fan_attendance(2017,29)
 #SELECT Attendance.homeav,Attendance.team FROM Postseason JOIN attendance ON Postseason.team=Attendance.team WHERE Attendance.year=2017 AND postseason.postseason="yes" ORDER BY Attendance.rank
 
     
