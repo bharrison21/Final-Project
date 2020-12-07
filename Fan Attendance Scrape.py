@@ -39,12 +39,12 @@ def nba_fan_attendance(year,limit):
                     teamsdata[finalteam]=[homeaverage,finalrank]
 
     #this is all to get it to limit how much data is added at once
-    tablelen=cur.execute("SELECT Count(*) FROM Attendance")
-    newlen=cur.fetchone()
-    val=newlen[-1]
-    while val<=limit:
+
+    cur.execute("SELECT * FROM Attendance")
+    newlen=cur.fetchall()
+    while len(newlen)<=limit:
         for team in teamsdata:
-            if val>limit:
+            if len(newlen)>limit:
                 break
             exists=cur.execute("SELECT team FROM Attendance WHERE team=?",(team, ))
             if cur.fetchone():
@@ -53,10 +53,9 @@ def nba_fan_attendance(year,limit):
                 rank=teamsdata[team][1]
                 homeaverage=teamsdata[team][0]
                 cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
-                tablelen=cur.execute("SELECT Count(*) FROM Attendance")
-                newlen=cur.fetchone()
-                val=newlen[-1]
-        #print(teamsdata)
+                cur.execute("SELECT * FROM Attendance")
+                newlen=cur.fetchall()
+                
     conn.commit()
 nba_fan_attendance(2017,24)
 nba_fan_attendance(2017,29)
