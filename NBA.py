@@ -73,7 +73,8 @@ def get_nba_api_data():
             nba_data.append(data)
         except:
             None
-        return nba_data
+    return nba_data
+        
            
 
 
