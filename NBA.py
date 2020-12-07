@@ -32,10 +32,9 @@ def get_nba_teams_id():
 #Create function to pull every NBA game from the 2018-2019 season 
 #with the date, home team, home team score, away team, away team score, and winner 
 def get_nba_api_data():
+    nba_data=[]
     team_and_id=get_nba_teams_id()
-    conn = sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
-    cur = conn.cursor() 
-    cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
+    game_id=0
     for l in range(1,1315):
         url_2="https://www.balldontlie.io/api/v1/stats"
         try:
@@ -61,6 +60,7 @@ def get_nba_api_data():
             away_team_id=first['game']['visitor_team_id']
             away_team=team_and_id[away_team_id]
             away_team_score=first['game']['visitor_team_score']
+            game_id+=1
 
             winner=''
             if home_team_score>away_team_score:
@@ -68,29 +68,32 @@ def get_nba_api_data():
             else:
                 winner=away_team
 
-            cur.execute("INSERT INTO NBA_Season (Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?)",(date, home_team, home_team_score, away_team, away_team_score, winner))
             
-            print(date,home_team,home_team_score,away_team,away_team_score,winner)       
+            data=(game_id,date,home_team,home_team_score,away_team,away_team_score,winner)    
+            nba_data.append(data)
         except:
-            None   
-        
+            None
+        return nba_data
+           
 
-    conn.commit() 
-get_nba_api_data()
 
 #create database and limit to 25 
 def table_setup():
     conn = sqlite3.connect('/Users/bradleyharrison/Desktop/KateDannyBradleyFinalProject/Final.db')
     cur = conn.cursor() 
-    cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Game_ID INTEGER, Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
     data_1=get_nba_api_data()
-    #count=0
-    #for x in data_1:
-        #print(x[0])
-        # if count==24:
-        #     break
-        # if cur.execute("SELECT Date FROM NBA_Season WHERE Date IS NULL"):
-        #     cur.execute("INSERT INTO NBA_Season (Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?)",(x[0], x[1], x[2], x[3], x[4], x[5]))
-        #     count+=1
+    count=0
+    cur.execute("SELECT Game_ID FROM NBA_Season")
+    game_id=cur.fetchall()
+    for x in data_1:
+        print(x[0])
+        if count<=24:
+            if x[0] not in game_id:
+                print('hi')
+                cur.execute("INSERT INTO NBA_Season (Game_ID, Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?, ?)",(x[0],x[1], x[2], x[3], x[4], x[5], x[6]))
+                count+=1
+            else:
+                continue
     conn.commit()
-#table_setup()
+table_setup()
