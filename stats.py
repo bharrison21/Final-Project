@@ -3,7 +3,7 @@ import sqlite3
 import os
 import requests
 
-conn = sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+conn = sqlite3.connect('/Users/bradleyharrison/Desktop/KateDannyBradleyFinalProject/Final.db')
 cur = conn.cursor() 
 cur.execute("CREATE TABLE IF NOT EXISTS NBA_Stats (Player TEXT, Team TEXT, PPG INTEGER)")
 
@@ -30,12 +30,13 @@ def stats(year,limit):
                     for t in team:
                         team_name=t['name']
                     avg_pts=x['average']['points']
-                    #print("Player: " + player_name + ",","Team: " + team_name + ",","PPG: " + str(avg_pts))
+                    print("Player: " + player_name + ",","Team: " + team_name + ",","PPG: " + str(avg_pts))
                     cur.execute("INSERT INTO NBA_Stats (Player, Team, PPG) VALUES (?, ?, ?)",(str(player_name), str(team_name), int(avg_pts),))
-                    cur.execute("SELECT * FROM Attendance")
+                    cur.execute("SELECT * FROM NBA_Stats")
                     newlen=cur.fetchall()
     conn.commit()
-stats(2018,20)
+stats(2018,30)
+
 
 
 # cur.execute("SELECT * FROM Attendance")
