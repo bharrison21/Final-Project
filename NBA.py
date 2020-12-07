@@ -4,12 +4,30 @@ import os
 import requests
 import time 
 
+<<<<<<< HEAD
 #Create function to get dictionary of NBA Teams and their respecitve ID's from the API 
 def get_nba_teams_id():
     team={}
     for l in range(1,1315):
         if len(team)==30:
             break
+=======
+#Create Database 
+#conn = sqlite3.connect('/Users/bradleyharrison/Desktop/KateDannyBradleyFinalProject/Final.db')
+conn=sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+cur = conn.cursor()
+
+
+cur.execute("DROP TABLE IF EXISTS Postseason")
+cur.execute("CREATE TABLE IF NOT EXISTS Postseason (team TEXT, year INTEGER, postseason TEXT)")
+
+
+#Retrieve which teams made the 2015-2016 NBA playoffs
+
+def get_nba_api_data_2015_2016():
+    lst_city=[]
+    for l in range(1,90):
+>>>>>>> c041b6bb30ff8276425f2f2696dc10914a6d3977
         url_2="https://www.balldontlie.io/api/v1/stats"
         try:
             ne=requests.get(url_2,

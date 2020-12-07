@@ -1,4 +1,15 @@
 import requests 
+import sqlite3
+import json
+import os
+
+
+conn=sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+cur = conn.cursor()
+
+cur.execute("DROP TABLE IF EXISTS Attendance")
+cur.execute("CREATE TABLE IF NOT EXISTS Attendance (rank INTEGER, team TEXT, homeav INTEGER, year INTEGER)")
+
 from bs4 import BeautifulSoup
 def nba_fan_attendance(year):
     url='http://www.espn.com/nba/attendance/_/year/' + str(year)
@@ -26,8 +37,14 @@ def nba_fan_attendance(year):
                     #print(team.text)
                     finalteam=team.text.strip()
                     teamsdata[finalteam]=[homeaverage,finalrank]
-        print(teamsdata)
+    for team in teamsdata:
+        rank=teamsdata[team][1]
+        homeaverage=teamsdata[team][0]
+        cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
+        #print(teamsdata)
+    conn.commit()
 nba_fan_attendance(2017)
-
+nba_fan_attendance(2018)
+#SELECT Attendance.homeav,Attendance.team FROM Postseason JOIN attendance ON Postseason.team=Attendance.team WHERE Attendance.year=2017 AND postseason.postseason="yes" ORDER BY Attendance.rank
 
     
