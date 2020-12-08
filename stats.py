@@ -45,6 +45,8 @@ def table():
 table()
 
 
+#MAKE GLOBAL DATABASE
+
         
         
  
