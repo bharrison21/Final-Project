@@ -4,29 +4,28 @@ import json
 import os
 
 
-conn=sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+conn=sqlite3.connect('/Users/saracohen/Downloads/KateDannyBradleyFinalProject/Final.db')
 cur = conn.cursor()
 
 #cur.execute("DROP TABLE IF EXISTS Attendance")
 cur.execute("CREATE TABLE IF NOT EXISTS Attendance (rank INTEGER, team TEXT, homeav INTEGER, year INTEGER)")
 
 from bs4 import BeautifulSoup
-def nba_fan_attendance(year,limit):
+def nba_fan_attendance(year, limit):
     url='http://www.espn.com/nba/attendance/_/year/' + str(year)
     page=requests.get(url)
     if page.ok:
         soup=BeautifulSoup(page.content, 'html.parser')
 
-        table=soup.find('table',class_='tablehead')
+        table=soup.find('table', class_= 'tablehead')
         rows=table.findAll('tr')
-
         teamsdata={}
 
         for row in rows[2:]:
-
             vals=row.findAll('td')
             finalrank=vals[0].text.strip()
-            homeaverage=vals[4].text.strip()
+            homeaverage=vals[2].text.strip()
+            print(homeaverage)
             #roadaverage=vals[7].text.strip()
             #totalaverage=vals[10].text.strip()
 
@@ -36,8 +35,8 @@ def nba_fan_attendance(year,limit):
                 if team!=None:
                     #print(team.text)
                     finalteam=team.text.strip()
-                    teamsdata[finalteam]=[homeaverage,finalrank]
-
+                    teamsdata[finalteam]=homeaverage,finalrank
+    return teamsdata
     #this is all to get it to limit how much data is added at once
 
     cur.execute("SELECT * FROM Attendance")
@@ -55,10 +54,9 @@ def nba_fan_attendance(year,limit):
                 cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
                 cur.execute("SELECT * FROM Attendance")
                 newlen=cur.fetchall()
-                
+                    
     conn.commit()
 nba_fan_attendance(2017,24)
-nba_fan_attendance(2017,29)
 #SELECT Attendance.homeav,Attendance.team FROM Postseason JOIN attendance ON Postseason.team=Attendance.team WHERE Attendance.year=2017 AND postseason.postseason="yes" ORDER BY Attendance.rank
 
     
