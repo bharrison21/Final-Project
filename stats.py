@@ -3,8 +3,11 @@ import sqlite3
 import os
 import requests
 
-conn = sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
-cur = conn.cursor() 
+path = os.path.dirname(os.path.abspath(__file__))
+conn = sqlite3.connect(path+'/'+'Final.db')
+#conn = sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+cur = conn.cursor()
+#cur.execute("DROP TABLE IF EXISTS NBA_Stats")
 cur.execute("CREATE TABLE IF NOT EXISTS NBA_Stats (Player TEXT, Team TEXT, PPG INTEGER)")
 
 def stats(year,limit):
@@ -32,24 +35,7 @@ def stats(year,limit):
                     avg_pts=x['average']['points']
                     #print("Player: " + player_name + ",","Team: " + team_name + ",","PPG: " + str(avg_pts))
                     cur.execute("INSERT INTO NBA_Stats (Player, Team, PPG) VALUES (?, ?, ?)",(str(player_name), str(team_name), int(avg_pts),))
-                    cur.execute("SELECT * FROM Attendance")
+                    cur.execute("SELECT * FROM NBA_Stats")
                     newlen=cur.fetchall()
     conn.commit()
-stats(2018,20)
-
-
-# cur.execute("SELECT * FROM Attendance")
-#     newlen=cur.fetchall()
-#     while len(newlen)<=limit:
-#         for team in teamsdata:
-#             if len(newlen)>limit:
-#                 break
-#             exists=cur.execute("SELECT team FROM Attendance WHERE team=?",(team, ))
-#             if cur.fetchone():
-#                 continue
-#             else:
-#                 rank=teamsdata[team][1]
-#                 homeaverage=teamsdata[team][0]
-#                 cur.execute("INSERT INTO Attendance (rank,team,homeav,year) VALUES (?,?,?,?)",(rank,team,homeaverage,year))
-#                 cur.execute("SELECT * FROM Attendance")
-#                 newlen=cur.fetchall()
+stats(2018,28)
