@@ -27,7 +27,7 @@ def stats(year):
     return player_stats      
 
 def table():
-    conn = sqlite3.connect('/Users/bradleyharrison/Desktop/KateDannyBradleyFinalProject/Final.db')
+    conn= sqlite3.connect('/Users/saracohen/Downloads/KateDannyBradleyFinalProject/Final.db')
     cur = conn.cursor() 
     cur.execute("CREATE TABLE IF NOT EXISTS NBA_Stats (Player_ID INTEGER, Player TEXT, Team TEXT, PPG INTEGER)")
     ppg=stats(2018)
@@ -35,7 +35,7 @@ def table():
     cur.execute("SELECT Player_ID FROM NBA_Stats")
     player_id=cur.fetchall()
     for x in ppg:
-        if count<=24:
+        if count<=175:
             if x[0] not in player_id:
                 cur.execute("INSERT INTO NBA_Stats (Player_ID, Player, Team, PPG) VALUES (?, ?, ?, ?)",(x[0], x[1], x[2], x[3]))
                 count+=1

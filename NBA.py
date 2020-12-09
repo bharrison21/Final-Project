@@ -80,7 +80,7 @@ def get_nba_api_data():
 
 #create database and limit to 25 
 def table_setup():
-    conn = sqlite3.connect('/Users/bradleyharrison/Desktop/KateDannyBradleyFinalProject/Final.db')
+    conn = sqlite3.connect('/Users/saracohen/Downloads/KateDannyBradleyFinalProject/Final.db')
     cur = conn.cursor() 
     cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Game_ID INTEGER, Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
     data_1=get_nba_api_data()
@@ -89,7 +89,7 @@ def table_setup():
     game_id=cur.fetchall()
     for x in data_1:
         print(x[0])
-        if count<=24:
+        if count<=500:
             if x[0] not in game_id:
                 print('hi')
                 cur.execute("INSERT INTO NBA_Season (Game_ID, Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?, ?)",(x[0],x[1], x[2], x[3], x[4], x[5], x[6]))
