@@ -80,7 +80,9 @@ def get_nba_api_data():
 
 #create database and limit to 25 
 def table_setup():
-    conn = sqlite3.connect('/Users/saracohen/Downloads/KateDannyBradleyFinalProject/Final.db')
+    path = os.path.dirname(os.path.abspath(__file__))
+    db = os.path.join(path, 'final.db')
+    conn= sqlite3.connect(db)
     cur = conn.cursor() 
     cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Game_ID INTEGER, Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
     data_1=get_nba_api_data()
