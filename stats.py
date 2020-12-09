@@ -38,4 +38,4 @@ def stats(year,limit):
                     cur.execute("SELECT * FROM NBA_Stats")
                     newlen=cur.fetchall()
     conn.commit()
-stats(2018,28)
+stats(2018,24)

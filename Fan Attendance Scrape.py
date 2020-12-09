@@ -17,7 +17,7 @@ def nba_fan_attendance(year,limit):
     if page.ok:
         soup=BeautifulSoup(page.content, 'html.parser')
 
-        table=soup.find('table')
+        table=soup.find('table',class_='tablehead')
         rows=table.findAll('tr')
 
         teamsdata={}
