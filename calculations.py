@@ -19,5 +19,5 @@ def table_join():
         final_lst.append("Player's Percentage Points of their Team: " + str(i[0]) + " " + str(final_var1) + '%')
     return y
 table_join()
-    
+    ``
     
