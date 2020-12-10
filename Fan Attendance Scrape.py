@@ -4,7 +4,9 @@ import json
 import os
 
 
-conn=sqlite3.connect('/Users/saracohen/Downloads/KateDannyBradleyFinalProject/Final.db')
+path = os.path.dirname(os.path.abspath(__file__))
+db = os.path.join(path, 'final.db')
+conn= sqlite3.connect(db)
 cur = conn.cursor()
 
 #cur.execute("DROP TABLE IF EXISTS Attendance")

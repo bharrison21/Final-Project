@@ -2,6 +2,50 @@ import json
 import sqlite3
 import os
 import requests
+
+path = os.path.dirname(os.path.abspath(__file__))
+conn = sqlite3.connect(path+'/'+'Final.db')
+#conn = sqlite3.connect('/Users/kategould/Documents/KateDannyBradleyFinalProject/Final.db')
+cur = conn.cursor()
+#cur.execute("DROP TABLE IF EXISTS NBA_Stats")
+cur.execute("CREATE TABLE IF NOT EXISTS NBA_Stats (Player TEXT, Team TEXT, PPG INTEGER)")
+
+def stats(year,limit):
+    url='https://api.sportradar.us/nba/trial/v7/en/seasons/{}/REG/leaders.json?api_key=jnxztd6mxbwm79hjxt6bm93q'.format(str(year))
+    data=requests.get(url).text
+    new_data=json.loads(data)
+    y=new_data.get('categories')
+    for val in range(44):
+        data=y[val]['ranks']
+
+        cur.execute("SELECT * FROM NBA_Stats")
+        newlen=cur.fetchall()
+        while len(newlen)<=limit:
+            for x in data:
+                if len(newlen)>limit:
+                    break
+                exists=cur.execute("SELECT Player FROM NBA_Stats WHERE Player=?",(x['player']['full_name'], ))
+                if cur.fetchone():
+                    continue
+                else:
+                    player_name=x['player']['full_name']
+                    team=x['teams']
+                    for t in team:
+                        team_name=t['name']
+                    avg_pts=x['average']['points']
+                    #print("Player: " + player_name + ",","Team: " + team_name + ",","PPG: " + str(avg_pts))
+                    cur.execute("INSERT INTO NBA_Stats (Player, Team, PPG) VALUES (?, ?, ?)",(str(player_name), str(team_name), int(avg_pts),))
+                    cur.execute("SELECT * FROM NBA_Stats")
+                    newlen=cur.fetchall()
+    conn.commit()
+stats(2018,24)
+
+# OLD NBA VERSION DOESNT WORK
+
+import json
+import sqlite3
+import os
+import requests
 import time 
 
 #Create function to get dictionary of NBA Teams and their respecitve ID's from the API 
@@ -73,16 +117,13 @@ def get_nba_api_data():
             nba_data.append(data)
         except:
             None
-    return nba_data
-        
+        return nba_data
            
 
 
 #create database and limit to 25 
 def table_setup():
-    path = os.path.dirname(os.path.abspath(__file__))
-    db = os.path.join(path, 'final.db')
-    conn= sqlite3.connect(db)
+    conn = sqlite3.connect('/Users/kategould/documents/KateDannyBradleyFinalProject/Final.db')
     cur = conn.cursor() 
     cur.execute("CREATE TABLE IF NOT EXISTS NBA_Season (Game_ID INTEGER, Date TEXT, Home TEXT, Home_Score INTEGER, Away TEXT, Away_Score INTEGER, Winner TEXT)")
     data_1=get_nba_api_data()
@@ -90,8 +131,8 @@ def table_setup():
     cur.execute("SELECT Game_ID FROM NBA_Season")
     game_id=cur.fetchall()
     for x in data_1:
-        print(x[0])
-        if count<=500:
+ #       print(x[0])
+        while count<=500:
             if x[0] not in game_id:
                 print('hi')
                 cur.execute("INSERT INTO NBA_Season (Game_ID, Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?, ?)",(x[0],x[1], x[2], x[3], x[4], x[5], x[6]))
