@@ -3,8 +3,14 @@ import matplotlib.pyplot as plt
 import sqlite3
 import numpy as np
 import os
+<<<<<<< Updated upstream
 import random
 #data for plotting
+=======
+
+#This file creates all of our visualizations from our data
+
+>>>>>>> Stashed changes
 def make_raptors_plot():
     path = os.path.dirname(os.path.abspath(__file__))
     db = os.path.join(path, 'final.db')

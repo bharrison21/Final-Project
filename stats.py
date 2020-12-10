@@ -3,6 +3,9 @@ import sqlite3
 import os
 import requests
 
+#This file is responsible for our Sport Radar API and creating the table NBA_Stats
+#Calling table() will get this function to work, and limits the data to 25 items each time it runs
+
 def stats(year):
     player_names_1=[]
     player_stats=[]
@@ -36,9 +39,12 @@ def table():
     count=0
     cur.execute("SELECT Player_ID FROM NBA_Stats")
     player_id=cur.fetchall()
+    new_id = [i[j] for i in player_id for j in range(len(i))]
+
+
     for x in ppg:
-        if count<=175:
-            if x[0] not in player_id:
+        if count<=25:
+            if x[0] not in new_id:
                 cur.execute("INSERT INTO NBA_Stats (Player_ID, Player, Team, PPG) VALUES (?, ?, ?, ?)",(x[0], x[1], x[2], x[3]))
                 count+=1
             else:
@@ -46,9 +52,5 @@ def table():
     conn.commit()
 table()
 
-
-#MAKE GLOBAL DATABASE
-
-        
         
  

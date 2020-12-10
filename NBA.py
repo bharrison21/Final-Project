@@ -97,6 +97,6 @@ def table_setup():
                 cur.execute("INSERT INTO NBA_Season (Game_ID, Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?, ?)",(x[0],x[1], x[2], x[3], x[4], x[5], x[6]))
                 count+=1
             else:
-             H   continue
+                continue
     conn.commit()
 table_setup()
