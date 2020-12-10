@@ -2,6 +2,8 @@ import json
 import sqlite3
 import os
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
 
 path = os.path.dirname(os.path.abspath(__file__))
 conn = sqlite3.connect(path+'/'+'Final.db')
@@ -38,7 +40,7 @@ def stats(year,limit):
                     cur.execute("SELECT * FROM NBA_Stats")
                     newlen=cur.fetchall()
     conn.commit()
-stats(2018,24)
+#stats(2018,24)
 
 # OLD NBA VERSION DOESNT WORK
 
@@ -140,4 +142,4 @@ def table_setup():
             else:
                 continue
     conn.commit()
-table_setup()
+#table_setup()

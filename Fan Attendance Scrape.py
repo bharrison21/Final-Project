@@ -9,7 +9,7 @@ db = os.path.join(path, 'final.db')
 conn= sqlite3.connect(db)
 cur = conn.cursor()
 
-#cur.execute("DROP TABLE IF EXISTS Attendance")
+cur.execute("DROP TABLE IF EXISTS Attendance")
 cur.execute("CREATE TABLE IF NOT EXISTS Attendance (rank INTEGER, team TEXT, homeav INTEGER, year INTEGER)")
 
 from bs4 import BeautifulSoup
@@ -26,7 +26,7 @@ def nba_fan_attendance(year, limit):
         for row in rows[2:]:
             vals=row.findAll('td')
             finalrank=vals[0].text.strip()
-            homeaverage=vals[2].text.strip()
+            homeaverage=vals[4].text.strip()
             print(homeaverage)
             #roadaverage=vals[7].text.strip()
             #totalaverage=vals[10].text.strip()
@@ -38,7 +38,7 @@ def nba_fan_attendance(year, limit):
                     #print(team.text)
                     finalteam=team.text.strip()
                     teamsdata[finalteam]=homeaverage,finalrank
-    return teamsdata
+    #return teamsdata
     #this is all to get it to limit how much data is added at once
 
     cur.execute("SELECT * FROM Attendance")
@@ -58,7 +58,10 @@ def nba_fan_attendance(year, limit):
                 newlen=cur.fetchall()
                     
     conn.commit()
-nba_fan_attendance(2017,24)
+nba_fan_attendance(2015,29)
+nba_fan_attendance(2016,29)
+#nba_fan_attendance(2017,29)
+#nba_fan_attendance(2018,29)
 #SELECT Attendance.homeav,Attendance.team FROM Postseason JOIN attendance ON Postseason.team=Attendance.team WHERE Attendance.year=2017 AND postseason.postseason="yes" ORDER BY Attendance.rank
 
     
