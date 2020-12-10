@@ -3,6 +3,10 @@ import sqlite3
 import os
 import requests
 import math
+
+#This file joins table NBA_Stats and NBA_Season to calculate what percentage of a team's points that a player had
+#The calculations are written to a file called calculations.txt
+
 def table_join():
     path = os.path.dirname(os.path.abspath(__file__))
     db = os.path.join(path, 'final.db')

@@ -10,8 +10,9 @@ def make_raptors_plot():
     db = os.path.join(path, 'final.db')
     conn= sqlite3.connect(db)
     cur = conn.cursor() 
-    cur.execute("SELECT NBA_Stats.Player FROM NBA_Stats WHERE Team = 'Raptors'")
+    cur.execute("SELECT NBA_Stats.Player FROM NBA_Stats WHERE NBA_Stats.Team = 'Raptors'")
     x= cur.fetchall()
+    players=[i[j] for i in x for j in range(len(i))]
     z= []
     a= []
     for i in x:
@@ -19,18 +20,19 @@ def make_raptors_plot():
         a.append(i)
     cur.execute("SELECT NBA_Stats.PPG FROM NBA_Stats WHERE Team = 'Raptors'")
     y= cur.fetchall()
+    debug = [i[j] for i in y for j in range(len(i))]
     lst= []
-    for i in y:
-        lst.append(i)
-    for i in lst:
-        i= ' '.join(map(str, y))
-        i= i.replace(',', '')
-        i= i.replace('(', '')
-        i= i.replace(')', '')
-        q= i.split(' ')
-    for i in q:
-        i= float(i)
-        z.append(i)
+    # for i in y:
+    #     lst.append(i)
+    # for i in lst:
+    #     i= ' '.join(map(str, y))
+    #     i= i.replace(',', '')
+    #     i= i.replace('(', '')
+    #     i= i.replace(')', '')
+    #     q= i.split(' ')
+    # for i in q:
+    #     i= float(i)
+    #     z.append(i)
     fig, ax = plt.subplots() 
     plt.bar(a, z)
     ax.set_xlabel('Player', fontsize= 16, color= 'r')
@@ -247,5 +249,5 @@ def final_graph():
     
     plt.show()
 make_raptors_plot()
-final_graph()
+#final_graph()
     
