@@ -43,7 +43,7 @@ def table():
 
 
     for x in ppg:
-        if count<=25:
+        if count<=24:
             if x[0] not in new_id:
                 cur.execute("INSERT INTO NBA_Stats (Player_ID, Player, Team, PPG) VALUES (?, ?, ?, ?)",(x[0], x[1], x[2], x[3]))
                 count+=1

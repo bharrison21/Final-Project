@@ -90,10 +90,8 @@ def table_setup():
     cur.execute("SELECT Game_ID FROM NBA_Season")
     game_id=cur.fetchall()
     for x in data_1:
-        print(x[0])
-        if count<=500:
+        if count<=24:
             if x[0] not in game_id:
-                print('hi')
                 cur.execute("INSERT INTO NBA_Season (Game_ID, Date, Home, Home_Score, Away, Away_Score, Winner) VALUES (?, ?, ?, ?, ?, ?, ?)",(x[0],x[1], x[2], x[3], x[4], x[5], x[6]))
                 count+=1
             else:
