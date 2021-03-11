@@ -72,3 +72,4 @@ def table():
     conn.commit()
 table()
     
+    
