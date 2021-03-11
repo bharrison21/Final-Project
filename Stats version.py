@@ -143,3 +143,4 @@ def table_setup():
                 continue
     conn.commit()
 #table_setup()
+
